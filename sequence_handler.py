@@ -1,20 +1,25 @@
 from bot import Bot
 
-robot = Bot()
+BOT = Bot()
 
-action_methods = { 
-    'F' : robot.fw_step,
-    'B' : robot.back_step,
-    'L' : robot.turn_left,
-    'R' : robot.turn_right,
-    'S' : robot.stop,
-    'U' : robot.hammer_up,
-    'D' : robot.hammer_down,
-    'O' : robot.open_claws,
-    'C' : robot.close_claws
+ACTION_METHODS = {
+    'F' : BOT.fw_step,
+    'B' : BOT.back_step,
+    'L' : BOT.turn_left,
+    'R' : BOT.turn_right,
+    'S' : BOT.stop,
+    'U' : BOT.axe_up,
+    'D' : BOT.axe_down,
+    'O' : BOT.open_claws,
+    'C' : BOT.close_claws
     }
 
 def run(sequence):
+    """
+    Input is a string where each characters
+    represents an action. Each action is executed according
+    to the defined action method mapping
+    """
     for action in sequence:
-        if action in action_methods:
-            action_methods[action]()
+        if action in ACTION_METHODS:
+            ACTION_METHODS[action]()
