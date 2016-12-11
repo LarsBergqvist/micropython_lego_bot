@@ -16,7 +16,7 @@ ACTION_METHODS = {
 
 def run(sequence):
     """
-    Input is a string where each characters
+    Input is a string where each character
     represents an action. Each action is executed according
     to the defined action method mapping
     """
