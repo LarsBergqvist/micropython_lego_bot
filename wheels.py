@@ -8,14 +8,12 @@ class Wheels(object):
     """
     def __init__(self, servos, servopin_left, servopin_right):
         self.servos = servos
-        # Servo pin assignments
         self.left_wheel = servopin_left
         self.right_wheel = servopin_right
-
-        # Configurations for the wheels
         self.wheel_speed = 10
         self.drift = -0.5
         self.turn_length = 0.5
+        self.straight_length = 0.05
 
     def stop(self):
         """Stops the wheels"""
@@ -26,14 +24,14 @@ class Wheels(object):
         """Moves the bot forward one step"""
         self.servos.position(self.left_wheel, degrees=90 + self.wheel_speed)
         self.servos.position(self.right_wheel, degrees=90 - self.wheel_speed + self.drift)
-        utime.sleep(0.5)
+        utime.sleep(self.straight_length)
         self.stop()
 
     def back_step(self):
         """Moves the bot backwards one step"""
         self.servos.position(self.left_wheel, degrees=90 - self.wheel_speed)
         self.servos.position(self.right_wheel, degrees=90 + self.wheel_speed + self.drift)
-        utime.sleep(0.5)
+        utime.sleep(self.straight_length)
         self.stop()
 
     def turn_right(self):

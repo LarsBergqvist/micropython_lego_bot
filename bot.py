@@ -1,12 +1,12 @@
 """
-A bot with servos
+A bot with servos for an Adafruit Feather Huzzah
 Requires the Adafruit PWM servo library:
 https://github.com/adafruit/Adafruit-PWM-Servo-Driver-Library
+Uses a FeatherWing servo board attached with i2C
 """
 import machine
 import servo
 import utime
-
 
 from wheels import Wheels
 from axe import Axe
@@ -17,35 +17,39 @@ class Bot(object):
     A robot car with two continuous servos as wheels
     and three standard servos as weapons (axe and claws)
     """
-    i2c = machine.I2C(machine.Pin(5), machine.Pin(4))
-    servos = servo.Servos(i2c)
-    wheels = Wheels(servos, 0, 1)
-    axe = Axe(servos, 5)
-    claws = Claws(servos, 7, 6)
-
-    ACTION_METHODS = {
-        'F' : wheels.fw_step,
-        'B' : wheels.back_step,
-        'L' : wheels.turn_left,
-        'R' : wheels.turn_right,
-        'S' : wheels.stop,
-        'U' : axe.axe_up,
-        'D' : axe.axe_down,
-        'O' : claws.open_claws,
-        'C' : claws.close_claws
-    }
 
     def __init__(self):
-        pass
+        # Setup pins to use for i2c and create the servos object
+        i2c = machine.I2C(machine.Pin(5), machine.Pin(4))
+        servos = servo.Servos(i2c)
 
-    def execute(self, action):
+        # Create the the servo controlled parts of the bot
+        # and assign the control pins to use
+        self.wheels = Wheels(servos, 0, 1)
+        self.axe = Axe(servos, 5)
+        self.claws = Claws(servos, 7, 6)
+
+        # A mapping between each command and the
+        # corresponding method on the servo objects
+        self.action_methods = {
+            'F' : self.wheels.fw_step,
+            'B' : self.wheels.back_step,
+            'L' : self.wheels.turn_left,
+            'R' : self.wheels.turn_right,
+            'S' : self.wheels.stop,
+            'U' : self.axe.up,
+            'D' : self.axe.down,
+            'O' : self.claws.open,
+            'C' : self.claws.close
+        }
+
+    def _execute(self, action):
         """
-        Executes an action.
+        Executes an action according to the mapped methods.
         Input is a character that represents an action.
         """
-
-        if action in self.ACTION_METHODS:
-            self.ACTION_METHODS[action]()
+        if action in self.action_methods:
+            self.action_methods[action]()
 
     def run(self, sequence):
         """
@@ -54,4 +58,4 @@ class Bot(object):
         to the defined action method mapping
         """
         for action in sequence:
-            self.execute(action)
+            self._execute(action)
