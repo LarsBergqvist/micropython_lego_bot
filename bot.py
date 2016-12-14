@@ -9,13 +9,13 @@ import servo
 import utime
 
 from wheels import Wheels
-from axe import Axe
+from hammer import Hammer
 from claws import Claws
 
 class Bot(object):
     """
     A robot car with two continuous servos as wheels
-    and three standard servos as weapons (axe and claws)
+    and three standard servos as weapons (hammer and claws)
     """
 
     def __init__(self):
@@ -26,7 +26,7 @@ class Bot(object):
         # Create the the servo controlled parts of the bot
         # and assign the control pins to use
         self.wheels = Wheels(servos, 0, 1)
-        self.axe = Axe(servos, 5)
+        self.hammer = Hammer(servos, 5)
         self.claws = Claws(servos, 7, 6)
 
         # A mapping between each command and the
@@ -37,8 +37,8 @@ class Bot(object):
             'L' : self.wheels.turn_left,
             'R' : self.wheels.turn_right,
             'S' : self.wheels.stop,
-            'U' : self.axe.up,
-            'D' : self.axe.down,
+            'U' : self.hammer.up,
+            'D' : self.hammer.down,
             'O' : self.claws.open,
             'C' : self.claws.close
         }
