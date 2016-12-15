@@ -43,14 +43,6 @@ class Bot(object):
             'C' : self.claws.close
         }
 
-    def _execute(self, action):
-        """
-        Executes an action according to the mapped methods.
-        Input is a character that represents an action.
-        """
-        if action in self.action_methods:
-            self.action_methods[action]()
-
     def run(self, sequence):
         """
         Input is a string where each character
@@ -58,4 +50,5 @@ class Bot(object):
         to the defined action method mapping
         """
         for action in sequence:
-            self._execute(action)
+            if action in self.action_methods:
+                self.action_methods[action]()
